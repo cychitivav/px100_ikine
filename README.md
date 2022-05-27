@@ -58,8 +58,8 @@ where $a_x$, $a_y$ and $a_z$ are the components of the approach vector in the ba
 With all these simplifications made, the problem of the inverse kinematics of the robot is reduced to that of a 2R mechanism. This mechanism has two possible solutions, elbow up and elbow down.
 
 <p align="center">
-    <img src="https://user-images.githubusercontent.com/30636259/170735251-66cb82c2-ebd4-4d85-a0af-1e61a278ce6c.svg#gh-light-mode-only" alt="2r_white" width="100%" >
-    <img src="https://user-images.githubusercontent.com/30636259/170735526-51a6dcb6-269d-4443-9556-7a7a2073c52a.svg#gh-dark-mode-only" alt="2r_black" width="100%" >
+    <img src="https://user-images.githubusercontent.com/30636259/170742083-2b6b11e9-6990-4abd-8802-836f498bc924.svg#gh-light-mode-only" alt="2r_white" width="100%" >
+    <img src="https://user-images.githubusercontent.com/30636259/170741909-dfffa2ba-2f4f-4f3f-b2a9-596a6da834fc.svg#gh-dark-mode-only" alt="2r_black" width="100%" >
 </p>
 
 the equations of the 2R mechanism are:
@@ -69,16 +69,16 @@ $$
     r = \sqrt{x_w^2+y_w^2}\\
     h = z_w-L_1\\
     \\
-    hyp = \sqrt{r^2+h^2}\\
+    c = \sqrt{r^2+h^2}\\
     \\
     \beta = \arctan2{(L_m,L_2)}\\
-    \psi = \frac{pi}{2}-\beta\\
-    Lr = sqrt(Lm^2+L2^2)\\
+    \psi = \frac{\pi}{2}-\beta\\
+    L_r = \sqrt{L_m^2+L_2^2}\\
     \\
-    \phi = \arccos{\frac{hyp^2-L_3^2-L_r^2}{-2L_rL_3}}\\
+    \phi = \arccos{\frac{c^2-L_3^2-L_r^2}{-2L_rL_3}}\\
     \\
     \gamma = \arctan2{(h,r)}\\
-    \alpha =  \arccos{\frac{L_3^2-L_r^2-hyp^2}{-2L_rhyp}}
+    \alpha =  \arccos{\frac{L_3^2-L_r^2-c^2}{-2L_rc}}
 \end{gather*}
 $$
 
@@ -87,21 +87,44 @@ To define the elbow up and elbow down solution, the following equations are used
 
 <div align="center">
 
-| Joint |             Elbow up                |               Elbow down              |
-| :---: | :---------------------------------: | :-----------------------------------: |
-| $q_2$ | $\frac{\pi}{2}-\beta-\alpha-\gamma$ | $\frac{\pi}{2}-(\gamma-\alpha+\beta)$ |
-| $q_3$ |         $\pi-\psi-\phi$             |          $-\pi+(\phi-\psi)$           |
+|     Joint      |             Elbow up                |               Elbow down              |
+| :------------: | :---------------------------------: | :-----------------------------------: |
+| $\mathbf{q_2}$ | $\frac{\pi}{2}-\beta-\alpha-\gamma$ | $\frac{\pi}{2}-(\gamma-\alpha+\beta)$ |
+| $\mathbf{q_3}$ |         $\pi-\psi-\phi$             |          $-\pi+(\phi-\psi)$           |
 
 </div>
 
 ### Wrist Joint
+Once the angles of the waist, shoulder and elbow are defined, the wrist is reattached and the angle of the wrist is defined as:
+
+<p align="center">
+    <img src="https://user-images.githubusercontent.com/30636259/170784419-c36347e9-0043-40ba-bd57-056f06728878.svg#gh-light-mode-only" alt="wrist_coupling" width="400px" >
+    <img src="https://user-images.githubusercontent.com/30636259/170784264-ad5c0488-e15b-4189-8d5e-55cb0fcb69be.svg#gh-dark-mode-only" alt="wrist_coupling" width="400px" >
+</p>
 
 $$
-q_4=
+\begin{gather*}
+    \theta_a=\arctan2{\left(\sqrt{x_a^2+y_a^2},z_a\right)}\\
+    q_4=\theta_a-q_2-q_3-\frac{\pi}{2}
+\end{gather*}
+$$
+
+where $\theta_a$ is the angle of the approach vector respect to $z_0$ axis.
+
+
+### Analysis
+
+## Pick and place
+
+## Motion in task space
+
+## RViz visualization
+
+## Conclusions
 
 
 
-> __Note__: The development of this equations is done in [ikine function](matlab/ikine.m).
+> __Note__: The development of this equations is done in [ikine](matlab/ikine.m) function.
 
 
 # References

@@ -1,16 +1,18 @@
 function q = ikine(T, varargin)
-% IKINE Returns the position of the joints to reach the desired position 
-% T of the TCP
+% IKINE Returns the position of the joints to reach the desired pose T of 
+% the TCP
 %
 %   q = ikine(T) are the joint coordinates (1x4) corresponding to the  
 %   pincher x100 robot end-effector pose T (4x4) which is a homogenenous 
 %   transform.
 %
-%   q = ikine(...,OPTION,Value) 
+%   q = ikine(...,OPTION,Value) S
 % 
 %   OPTIONS:
-%   'lenghts', L 
-%   'elbow', E
+%   'lenghts', L: Change the robot arm lenghts with a  L, a vector of
+%                 1x5 [L1 L2 L3 L4 Lm].
+%   'elbow', E: Change the return configuration between elbow up or elbow 
+%               down. Can be spified as 'up' or 'down'.
 
     L1 = 0.0445; %m
     L2 = 0.1010; %m
@@ -88,9 +90,8 @@ function q = ikine(T, varargin)
     end
 
     % q4 (Wrist)
-    eul = tr2eul(T);
-
-    q(4) = eul(2)-q(2)-pi/2-q(3);
+    angA = atan2(sqrt(T(2,3)^2+T(1,3)^2),T(3,3));
+    q(4) = angA-q(2)-pi/2-q(3);
     
-    q = real(q);
+    %q = real(q);
 end

@@ -23,7 +23,7 @@ end
 
 PX = SerialLink(L,'name','Filoberta','tool',trotx(-pi/2)*troty(pi/2))
 %% Fkine
-qf = [0 0 -pi/2 0]
+qf = deg2rad([0 -25 50 40])
 TCP = PX.fkine(qf);
 %% Ikine
 qup = ikine(TCP,'elbow','up')
