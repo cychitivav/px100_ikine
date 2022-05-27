@@ -23,15 +23,16 @@ end
 
 PX = SerialLink(L,'name','Filoberta','tool',trotx(-pi/2)*troty(pi/2))
 %% Fkine
-qf = deg2rad([0 0 0 0])
+qf = [0 0 -pi/2 0]
 TCP = PX.fkine(qf);
 %% Ikine
-q = ikine(TCP)
+qup = ikine(TCP,'elbow','up')
+qdo = ikine(TCP,'elbow','down')
 %% Plots
 figure
 trplot(PX.fkine(qf),'rgb','length',0.1,'thick',2)
 view(30,30)
 axis tight
 hold on
-PX.plot([qf;q],'noa','jaxes','notiles','floorlevel',0,'noshadow','delay',1)
+PX.plot([qf;qup;qdo],'noa','jaxes','notiles','floorlevel',0,'noshadow','delay',1)
 axis tight
