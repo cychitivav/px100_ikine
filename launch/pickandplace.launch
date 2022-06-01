@@ -1,0 +1,27 @@
+<launch>
+    <!-- Args dynamixel -->
+    <arg name="usb_port" default="/dev/ttyUSB0" />
+    <arg name="dxl_baud_rate" default="1000000" />
+    <arg name="namespace" default="dynamixel_workbench" />
+
+    <!-- Args robot description -->
+    <arg name="rvizconfig" default="$(find px100_description)/rviz/config.rviz" />
+    <arg name="model" default="$(find px100_description)/urdf/robot.urdf" />
+
+    <!-- Start robot model and robot state publisher nodes -->
+    <param name="robot_description" command="$(find xacro)/xacro $(arg model)" />
+    <node name="robot_state_publisher" pkg="robot_state_publisher" type="robot_state_publisher" />
+
+    <!-- Start dynamixel package if run_dynamixel arg is true -->
+    <param name="dynamixel_info" value="$(find px100_description)/config/motors.yaml" />
+    <node name="$(arg namespace)" pkg="dynamixel_workbench_controllers" type="dynamixel_workbench_controllers" required="true" output="screen" args="$(arg usb_port) $(arg dxl_baud_rate)">
+        <rosparam command="load" file="$(find px100_description)/config/dynamixel.yaml" />
+        <remap from="/dynamixel_workbench/joint_states" to="joint_states" />
+    </node>
+
+    <!-- Run RViz with config -->
+    <node name="rviz" pkg="rviz" type="rviz" args="-d $(arg rvizconfig)" required="true" />
+
+    <!-- Run keyboard python node -->
+    <node name="pianplroutine" pkg="px100_ikine" output="screen" type="pickandplace.py" />
+</launch>
