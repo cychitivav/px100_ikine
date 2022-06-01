@@ -111,8 +111,15 @@ $$
 
 where $\theta_a$ is the angle of the approach vector respect to $z_0$ axis.
 
-
+### Workspace
+### Inverse kinematics solvers in robotics toolbox by Peter Corke
 ### Analysis
+#### Robot degrees of freedom
+#### Possible ikine solutions
+The phantom x robot has two possible solutions, the first  is denominate "elbow up" and the second  is called "elbow down". We can see the two configurations in the next image: 
+#### Espacio diestro
+* __Espacio de trabajo alcanzable__: Está compuesto por el conjunto de puntos alcanzables por el manipulador.
+* __Espacio de trabajo diestro__: Está compuesto por el conjunto de puntos que el manipulador puede alcanzar con una orientación arbitraria de su efector final.
 
 ## Pick and place
 
