@@ -15,8 +15,7 @@ class myKeyboard(Listener):
         # Variables to move robot
         self.motions = ['trax', 'tray', 'traz', 'rot']
         self.currentMotion = 0
-        self.step = 0.02
-        self.joints = [0, 0, 0, 0]
+        self.step = 0.05
 
         # Welcome message and start the listener
         welcome = """\nControls:
@@ -74,16 +73,16 @@ class myKeyboard(Listener):
         """ SENDJOINTS Send the desired joint configuration to robot through the 
             dynamixel_command service
 
-            sendJoints(q) receive the joint states vector q (1x4) corresponding 
+            sendJoints(q) receive the joint states vector q (4x1) corresponding 
             to the pincher x100 robot joints."""
 
-        self.PX.jointCommand(1, 'Goal_Position', self.rad2bin(q[0]))
-        self.PX.jointCommand(2, 'Goal_Position', self.rad2bin(q[1]))
-        self.PX.jointCommand(3, 'Goal_Position', self.rad2bin(q[2]))
-        self.PX.jointCommand(4, 'Goal_Position', self.rad2bin(q[3]))
+        self.PX.jointCommand(1, 'Goal_Position', self.PX.rad2bin(q[0]))
+        self.PX.jointCommand(2, 'Goal_Position', self.PX.rad2bin(q[1]))
+        self.PX.jointCommand(3, 'Goal_Position', self.PX.rad2bin(q[2]))
+        self.PX.jointCommand(4, 'Goal_Position', self.PX.rad2bin(q[3]))
 
     def computeTransforms(self, axis, step):
-        currentT = self.PX.fkine(self.joints)
+        currentT = self.PX.fkine(self.PX.joints)
         T = currentT.A.copy()
 
         if axis == 'trax':
@@ -93,11 +92,11 @@ class myKeyboard(Listener):
         elif axis == 'traz':
             T[2, 3] = T[2, 3] + step
         elif axis == 'rot':
-            T[0:3, 0:3] = T[0:3, 0:3] @ roty(step/10)
+            T[0:3, 0:3] = T[0:3, 0:3] @ roty(10*np.pi/180)
         else:
             rospy.logerror('Invalid axis')
 
-        Ts = rtb.ctraj(currentT, SE3(T), 5)
+        Ts = rtb.ctraj(currentT, SE3(T), 7)
 
         return Ts.A
 
