@@ -124,14 +124,74 @@ The phantom x robot has two possible solutions, the first  is denominate "elbow 
 * __Espacio de trabajo diestro__: Está compuesto por el conjunto de puntos que el manipulador puede alcanzar con una orientación arbitraria de su efector final.
 
 ## Pick and place
+For the development of a pick and place routine, the following parts were 3D printed:
+
+<div align="center" >
+
+| Part 1 | Part 2 |
+| :----: | :----: |
+| <img src="https://user-images.githubusercontent.com/30636259/171552916-f8f9c989-5833-4d76-bfa7-de4d779c29cc.png" width="200px"> | <img src="https://user-images.githubusercontent.com/30636259/171552921-b20710ea-d566-410c-99c1-4f4cb88f67c7.png" width="200px"> |
+
+</div>
+
+Part type 1 is initially located to the right of the robot, and part type 2 to the left. The challenge is to pick piece type 1 and place it in front, then take piece 2 and insert it into piece 1 which is now in front.
+
+<p align="center">
+    <img src="https://user-images.githubusercontent.com/30636259/171556851-b70b97c3-bac8-474d-9f53-304555ab0223.png" alt="pick_and_place" width="400px" >
+
+[^guide]
+</p>
+
+
+For this we developed a code in python, using the robotics toolbox by Peter Corke where initially the robot was created with the `DHrobot` class, and then 3 homogeneous transformation matrices where the robot is going to move, these are:
+
+* $T_{p_1}$: The transformation matrix that locates the TCP in Part 1.
+* $T_{p_2}$: The transformation matrix that locates the TCP in Part 2.
+* $T_{p_g}$: The transformation matrix that locates the TCP in the goal pose (front of the robot).
+
+One constraint is that the movements must be vertical for ascending and descending, and horizontal for moving, therefore, a safe zone height ($hsz=0.085~m$) was defined where the robot moves without colliding with any object. With the above, 3 other transformation matrices were defined equal to the previous ones but with a change in the height to reach the safe zone.
+
+* $T_{p_1h}$: The transformation matrix that locates the TCP above Part 1 at the height of the safe zone.
+* $T_{p_2h}$: The transformation matrix that locates the TCP above Part 2 at the height of the safe zone.
+* $T_{p_gh}$: The transformation matrix that locates the TCP above Part 1 at the height of the safe zone.
+
+Once these transformation matrices are defined, the robot [inverse kinematics method](scripts/px100_ikine/PXrobot.py) is used to know the state of the joints corresponding to each matrix, this in order to use the `jtraj` function of the toolbox to interpolate in the joint space, this function has the following syntax:
+
+```python
+q = rtb.jtraj(q0, qg, n)
+```
+
+Where $q_0$ is the source configuration, $q_g$ is the target configuration and $n$ is the number of points in the interpolation. In our algorithm we use 10 steps for each interpolation, therefore, the complete movement including the start at home and arrival at home has 130 configurations.
+
+
+<p align="center">
+    <img src="https://user-images.githubusercontent.com/30636259/171560516-5c9d8cf1-2198-480a-aa15-846119d251bc.gif" alt="jtraj" width="500px" >
+</p>
+
+1. $T_{home}\to T_{p_1h}$
+1. $T_{p_1h}\to T_{p_1}$
+1. $T_{p_1}\to T_{p_1h}$
+1. $T_{p_1h}\to T_{p_gh}$
+1. $T_{p_gh}\to T_{p_g}$
+1. $T_{p_g}\to T_{p_gh}$
+1. $T_{p_gh}\to T_{p_2h}$
+1. $T_{p_2h}\to T_{p_2}$
+1. $T_{p_2}\to T_{p_2h}$
+1. $T_{p_2h}\to T_{p_gh}$
+1. $T_{p_gh}\to T_{p_g}$
+1. $T_{p_g}\to T_{p_gh}$
+1. $T_{p_gh}\to T_{home}$
+
+Finally, to operate the griper, closing commands are sent after moves 2 and 8 (grasp), and opening commands after moves 5 and 11 (release). This is done with the service `dynamixel_workbench/dynamixel_command`.
 
 ## Motion in task space
 
-## RViz visualization
 
 ## Conclusions
 
 
+## Video
+https://user-images.githubusercontent.com/30636259/171556641-a57b44b1-683a-42c6-8f7a-a546d67eda81.mp4
 
 [Youtube video](https://youtu.be/_0eVXJhujo8)
 
@@ -143,3 +203,4 @@ The phantom x robot has two possible solutions, the first  is denominate "elbow 
 [^px100]: https://www.trossenrobotics.com/pincherx-100-robot-arm.aspx
 [^rvc]: https://petercorke.com/toolboxes/robotics-toolbox/
 [^modules]: http://docs.ros.org/en/lunar/api/catkin/html/howto/format2/installing_python.html
+[^guide]: https://drive.google.com/file/d/1tYA0gQ9XO5WdSqxvGoNDuhaGTOsUNHZ_/view?usp=sharing
