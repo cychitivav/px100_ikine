@@ -1,9 +1,10 @@
 from spatialmath.base import *
+from spatialmath import SE3
+import roboticstoolbox as rtb
 import numpy as np
 from pynput.keyboard import Key, Listener, KeyCode  # Libraries for keyboard input
 import rospy  # ROS libraries
 from px100_ikine.PXrobot import PX
-
 
 
 class myKeyboard(Listener):
@@ -36,7 +37,7 @@ class myKeyboard(Listener):
     def onPress(self, key):
         print("\033[A")  # Print especial character to erase key pressed
         if not rospy.is_shutdown():
-            if key == KeyCode.from_char('w'): # Next axis
+            if key == KeyCode.from_char('w'):  # Next axis
                 if self.currentMotion == 3:
                     self.currentMotion = 0
                 else:
@@ -45,7 +46,7 @@ class myKeyboard(Listener):
                 rospy.logwarn('You are moving the ' +
                               self.motions[self.currentMotion])
 
-            if key == KeyCode.from_char('s'): # Previous axis
+            if key == KeyCode.from_char('s'):  # Previous axis
                 if self.currentMotion == 0:
                     self.currentMotion = 3
                 else:
@@ -53,17 +54,21 @@ class myKeyboard(Listener):
                 rospy.logwarn('You are moving the ' +
                               self.motions[self.currentMotion])
 
-            if key == KeyCode.from_char('a'): # Positive step
-                T = self.calcT(self.motions[self.currentMotion], -self.step)
-                q = self.PX.ikine(T)
+            if key == KeyCode.from_char('a'):  # Positive step
+                Ts = self.computeTransforms(
+                    self.motions[self.currentMotion], -self.step)
 
-                # self.sendJoins(q)
+                for T in Ts:
+                    q = self.PX.ikine(T)
+                    self.sendJoins(q)
 
-            if key == KeyCode.from_char('d'): # Negative step
-                T = self.calcT(self.motions[self.currentMotion], self.step)
-                q = self.PX.ikine(T)
+            if key == KeyCode.from_char('d'):  # Negative step
+                Ts = self.computeTransforms(
+                    self.motions[self.currentMotion], self.step)
 
-                # self.sendJoins(q)
+                for T in Ts:
+                    q = self.PX.ikine(T)
+                    self.sendJoins(q)
 
     def sendJoins(self, q):
         """ SENDJOINTS Send the desired joint configuration to robot through the 
@@ -77,8 +82,9 @@ class myKeyboard(Listener):
         self.PX.jointCommand(3, 'Goal_Position', self.rad2bin(q[2]))
         self.PX.jointCommand(4, 'Goal_Position', self.rad2bin(q[3]))
 
-    def calcT(self, axis, step):
-        T = self.PX.fkine(self.joints).A
+    def computeTransforms(self, axis, step):
+        currentT = self.PX.fkine(self.joints)
+        T = currentT.A.copy()
 
         if axis == 'trax':
             T[0, 3] = T[0, 3] + step
@@ -91,7 +97,10 @@ class myKeyboard(Listener):
         else:
             rospy.logerror('Invalid axis')
 
-        return T
+        Ts = rtb.ctraj(currentT, SE3(T), 5)
+
+        return Ts.A
+
 
 if __name__ == "__main__":
     # Initialize the node and instantiate the class myKeyboard
