@@ -114,14 +114,23 @@ where $\theta_a$ is the angle of the approach vector respect to $z_0$ axis.
 
 ### Workspace
 ### Inverse kinematics solvers in robotics toolbox by Peter Corke
+We found seven methods for determining inverse kinematics with roboticstoolbox in python: its methods are going to describe one by one:
+* ikine_6s: inverse kinematics for 6-axis spherical wrist revolute robot, for more information you can make clic [here](https://petercorke.github.io/robotics-toolbox-python/arm_dh.html#roboticstoolbox.robot.DHRobot.DHRobot.ikine_6s).
+* ikine_LM: This metod use the numerical inverse kinematics by Levenberg-Marquadt optimization and return the inverse kinematic solution of the robot, also this method can be used for robots with any number of degrees of freedom. For more information you can make clic [here](https://petercorke.github.io/robotics-toolbox-python/arm_dh.html#roboticstoolbox.robot.DHRobot.DHRobot.ikine_LM).
+* ikine_LMS: This metod return the inverse kinematic solution using numerical inverse kinematics by Levenberg-Marquadt optimization. For more information you can make clic [here](https://petercorke.github.io/robotics-toolbox-python/arm_dh.html#roboticstoolbox.robot.DHRobot.DHRobot.ikine_LMS).
+
+* ikine_global: In this moment the motod ikine_global is  for using SciPy global optimizers. For more information you can make clic [here](https://petercorke.github.io/robotics-toolbox-python/arm_dh.html#roboticstoolbox.robot.DHRobot.DHRobot.ikine_global).
+*	ikine_min: This method allows to find Inverse kinematics by optimization with joint limits.For more information you can make clic [here](https://petercorke.github.io/robotics-toolbox-python/arm_dh.html#roboticstoolbox.robot.DHRobot.DHRobot.ikine_min).
+
+*	ikine_a: This metod use an analytic inverse kinematic solution to return a joint angle vector in radians. For more information you can make clic [here](https://petercorke.github.io/robotics-toolbox-python/arm_dh.html#roboticstoolbox.models.DH.Puma560.ikine_a).
+
 ### Analysis
 #### Robot degrees of freedom
 The robot has 4 GDL, 3 of them are used for position but the measurement of the fourth GDL is the angle that rotates around the open axis to provide movement to the robot's grippers to open and close the grippers.
 #### Possible ikine solutions
 The phantom x robot has two possible solutions, the first  is denominate "elbow up" and the second  is called "elbow down". We can see the two configurations in the next image: 
-#### Espacio diestro
-* __Espacio de trabajo alcanzable__: Está compuesto por el conjunto de puntos alcanzables por el manipulador.
-* __Espacio de trabajo diestro__: Está compuesto por el conjunto de puntos que el manipulador puede alcanzar con una orientación arbitraria de su efector final.
+#### Dexterous workspace
+The reachable workspace is the volume whereby the end effector is capable of reaching each point within the space in at least one orientation while the dexterous workspace has the end effector capable of reaching all points in all orientations.
 
 ## Pick and place
 For the development of a pick and place routine, the following parts were 3D printed:
