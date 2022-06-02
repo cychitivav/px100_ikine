@@ -116,6 +116,7 @@ where $\theta_a$ is the angle of the approach vector respect to $z_0$ axis.
 ### Inverse kinematics solvers in robotics toolbox by Peter Corke
 ### Analysis
 #### Robot degrees of freedom
+The robot has 4 GDL, 3 of them are used for position but the measurement of the fourth GDL is the angle that rotates around the open axis to provide movement to the robot's grippers to open and close the grippers.
 #### Possible ikine solutions
 The phantom x robot has two possible solutions, the first  is denominate "elbow up" and the second  is called "elbow down". We can see the two configurations in the next image: 
 #### Espacio diestro
