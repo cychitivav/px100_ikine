@@ -23,5 +23,5 @@
     <node name="rviz" pkg="rviz" type="rviz" args="-d $(arg rvizconfig)" required="true" />
 
     <!-- Run keyboard python node -->
-    <node name="pianplroutine" pkg="px100_ikine" output="screen" type="pickandplace.py" />
+    <node name="pianplroutine" pkg="px100_ikine" output="screen" type="pickplace.py" />
 </launch>
