@@ -132,7 +132,7 @@ The phantom x robot has two possible solutions, the first  is denominate "elbow 
 
 
 
-
+[Youtube video](https://youtu.be/_0eVXJhujo8)
 
 ## Acknowledgments
 * [Felipe Gonzales (Professor)](https://felipeg17.github.io/index.html)
