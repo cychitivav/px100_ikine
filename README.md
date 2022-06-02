@@ -110,6 +110,7 @@ $$
 $$
 
 where $\theta_a$ is the angle of the approach vector respect to $z_0$ axis.
+> __Note__: The development of this equations is done in [ikine](matlab/ikine.m) function.
 
 ### Workspace
 ### Inverse kinematics solvers in robotics toolbox by Peter Corke
@@ -131,9 +132,13 @@ The phantom x robot has two possible solutions, the first  is denominate "elbow 
 
 
 
-> __Note__: The development of this equations is done in [ikine](matlab/ikine.m) function.
 
 
-# References
+## Acknowledgments
+* [Felipe Gonzales (Professor)](https://felipeg17.github.io/index.html)
+* [Manuel Lugo (Monitor)](https://github.com/mlugom)
+
+## References
 [^px100]: https://www.trossenrobotics.com/pincherx-100-robot-arm.aspx
 [^rvc]: https://petercorke.com/toolboxes/robotics-toolbox/
+[^modules]: http://docs.ros.org/en/lunar/api/catkin/html/howto/format2/installing_python.html

@@ -48,6 +48,9 @@ class PX(rtb.DHRobot):
     def rad2bin(self, angle):  # Function to convert radians to binary (0-4095)
         return round(angle/(2*np.pi)*4095+2048)
 
+    def deg2bin(self, angle):  # Function to convert radians to binary (0-4095)
+        return round(angle/360*4095+2048)
+
     def updateJoints(self, msg):
         names = msg.name
         unorderedJoints = msg.position
