@@ -5,7 +5,7 @@ import numpy as np
 import rospy
 from dynamixel_workbench_msgs.srv import DynamixelCommand
 from sensor_msgs.msg import JointState
-from px100_ikine.PXrobot import PX
+from px100_description.PXrobot import PX
 
 PX = PX()
 

@@ -4,7 +4,7 @@ import roboticstoolbox as rtb
 import numpy as np
 from pynput.keyboard import Key, Listener, KeyCode  # Libraries for keyboard input
 import rospy  # ROS libraries
-from px100_ikine.PXrobot import PX
+from px100_description.PXrobot import PX
 
 
 class myKeyboard(Listener):
