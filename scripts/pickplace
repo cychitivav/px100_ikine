@@ -52,23 +52,17 @@ qs11 = rtb.jtraj(qgh, qg, nh)
 qs12 = rtb.jtraj(qg, qgh, nh)
 qs13 = rtb.jtraj(qgh, qhome, na)
 
-# trplot(Tp1)
-# trplot(Tp2)
-# trplot(Tpg)
-
 
 Qs = np.vstack((qs.q, qs2.q, qs3.q, qs4.q, qs5.q, qs6.q, qs7.q,
-               qs8.q, qs9.q, qs10.q, qs11.q, qs12.q, qs13.q))
-
-print(Qs.shape)
-print(Qs)
-
-PX.plot(Qs)
+                qs8.q, qs9.q, qs10.q, qs11.q, qs12.q, qs13.q))
 
 
 for n, q in enumerate(Qs):
     for i, angle in enumerate(q):
         PX.jointCommand(i+1, 'Goal_Position', PX.rad2bin(angle))
+
+    PX.plot(q)
+
     if n == na+nh-1:
         PX.jointCommand(5, 'Goal_Position', 2350)
     if n == 3*na+5*nh-1:
