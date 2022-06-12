@@ -310,10 +310,11 @@ in order to view the robot in rviz the same configuration file of the px100_desc
 The correct elaboration of the inverse kinematics is of utmost importance because in a simulation the robot can cross its own links, but in reality if this happens while using the robot in a physical way it can suffer serious damage. On the other hand, although the inverse kinematics yields the exact joint configuration to achieve a given pose, care must be taken as the quality of the sensors affects the measurement and therefore arrive at an approximate pose but not the real one as was the case in the pick and place task.
 
 ## Video
+<a href="https://youtu.be/_0eVXJhujo8">YouTube video</a>
 
 https://user-images.githubusercontent.com/30636259/171556641-a57b44b1-683a-42c6-8f7a-a546d67eda81.mp4
 
-[Youtube video](https://youtu.be/_0eVXJhujo8)
+
 
 ## Acknowledgments
 
